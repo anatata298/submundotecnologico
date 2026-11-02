@@ -1,6 +1,4 @@
-
 <?php
-// Dados de conexão com o banco MySQL
 $host = "sql103.infinityfree.com";
 $banco = "if0_43306668_SUBMUNDOTECNOLOGICO";
 $usuario = "if0_43306668";
@@ -18,6 +16,6 @@ try {
     $conexao->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 } catch (PDOException $e) {
-    die("Não foi possível conectar ao banco de dados.");
+    die("Erro ao conectar ao banco de dados.");
 }
 ?>
