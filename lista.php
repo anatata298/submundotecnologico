@@ -1,10 +1,16 @@
 
 <?php
+session_start();
+
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    header("Location: index.php");
+    exit;
+}
+
 include "conecta.php";
 
 try {
     $sql = "SELECT nome, cpf FROM aluno";
-
     $stmt = $conexao->prepare($sql);
     $stmt->execute();
 
@@ -41,7 +47,7 @@ try {
     </table>
 
     <br>
-    <a href="index.php">Voltar ao login</a>
+    <a href="sair.php">Sair</a>
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 
 <?php
+session_start();
+
 include "conecta.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,11 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        $sql = "SELECT * FROM aluno
-                WHERE cpf = :cpf AND senha = :senha";
+        $sql = "SELECT * FROM aluno WHERE cpf = :cpf AND senha = :senha";
 
         $stmt = $conexao->prepare($sql);
-
         $stmt->execute([
             ':cpf' => $cpf,
             ':senha' => $senha
@@ -25,8 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $linha = $stmt->fetch();
 
         if ($linha) {
+            session_regenerate_id(true);
+            $_SESSION['logado'] = true;
+            $_SESSION['cpf'] = $cpf;
+
             echo "Login bem-sucedido!";
             echo "<br><a href='lista.php'>Ver lista de alunos</a>";
+
         } else {
             echo "CPF ou senha incorretos.";
         }
