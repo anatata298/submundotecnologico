@@ -1,24 +1,41 @@
+
 <?php
-//Incluindo o arquivo o arquivo de conexão nesse arquivo
 include "conecta.php";
 
-// Recebendo os dados do formulário
-$cpf = $_POST['cpf'];
-$senha = $_POST['senha'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-// Consulta SQL insegura
-$sql = "SELECT * FROM aluno WHERE cpf = '$cpf' AND senha = '$senha'";
+    $cpf = trim($_POST['cpf'] ?? '');
+    $senha = $_POST['senha'] ?? '';
 
-try {
-    // Executando a consulta
-    $resultado = $conexao->query($sql);
-
-    if ( $linha = $resultado->fetch() ) { // fetch() retorna false se não tiver linhas
-        echo "Login bem-sucedido!";
-    } else {
-        echo "CPF ou senha incorretos.";
+    if ($cpf == '' || $senha == '') {
+        exit("Preencha o CPF e a senha.");
     }
-} catch (PDOException $e) {
-    echo "Erro ao executar consulta: " . $e->getMessage();
+
+    try {
+        $sql = "SELECT * FROM aluno
+                WHERE cpf = :cpf AND senha = :senha";
+
+        $stmt = $conexao->prepare($sql);
+
+        $stmt->execute([
+            ':cpf' => $cpf,
+            ':senha' => $senha
+        ]);
+
+        $linha = $stmt->fetch();
+
+        if ($linha) {
+            echo "Login bem-sucedido!";
+            echo "<br><a href='lista.php'>Ver lista de alunos</a>";
+        } else {
+            echo "CPF ou senha incorretos.";
+        }
+
+    } catch (PDOException $e) {
+        echo "Erro ao verificar o login.";
+    }
+
+} else {
+    echo "Acesse o formulário de login.";
 }
 ?>

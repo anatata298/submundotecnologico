@@ -1,20 +1,23 @@
+
 <?php
-// Definindo os dados de conexão com o banco MySQL
+// Dados de conexão com o banco MySQL
 $host = "sql103.infinityfree.com";
 $banco = "if0_43306668_SUBMUNDOTECNOLOGICO";
 $usuario = "if0_43306668";
-$senha = "PbyYsGJntfD";
+$senha = "Yakuzayakuzac10";
 
 try {
-    // Criando uma instância PDO para conectar ao banco MySQL
-    $conexao = new PDO("mysql:host=$host;dbname=$banco;charset=utf8", $usuario, $senha);
-    
-    // Definindo o modo de erro para exceções
-    $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conexao = new PDO(
+        "mysql:host=$host;dbname=$banco;charset=utf8mb4",
+        $usuario,
+        $senha
+    );
 
-    echo "Conexão com o banco de dados realizada com sucesso!";
+    $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conexao->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $conexao->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
 } catch (PDOException $e) {
-    // Exibindo a mensagem de erro em caso de falha na conexão
-    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+    die("Não foi possível conectar ao banco de dados.");
 }
 ?>
